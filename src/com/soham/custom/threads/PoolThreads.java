@@ -17,6 +17,7 @@ public class PoolThreads extends Thread {
 				if (taskQueue.currentQueueSize() > 0) {
 					Runnable runnable = taskQueue.dequeue();
 					runnable.run();
+					isStopped = true;
 				}
 			} catch(Exception ie) {
 				ie.printStackTrace();
@@ -26,11 +27,14 @@ public class PoolThreads extends Thread {
 	
 	public synchronized void stopThread() {
 		isStopped = true;
-		this.interrupt();
 	}
 	
 	public synchronized boolean isStopped() {
 		return isStopped;
+	}
+	
+	public synchronized State getThreadState() {
+		return this.getState();
 	}
 	
 }
